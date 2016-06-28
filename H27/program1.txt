@@ -1,0 +1,75 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+#define UNPLACED (-1)
+#define EDGE_TILES (2)
+#define NUM_TILES (EDGE_TILES * EDGE_TILES)
+int put_germ(int size);
+int check_position(int foot, int size, int already);
+int put_foot(int size, int already);
+int judge_infection(int left, int right, int germ);
+int myrand(int key);
+
+int put_germ(int size) {
+    char key;
+    int location;
+
+    printf("input 1 key: ");
+    scanf("%c", &key);
+    printf("now germ is in 0x%x \n", key);
+    location = myrand(key) % size + 1;
+    return location;
+}
+
+int check_position(int foot, int size, int already) {
+    if ((foot < 1) || (foot > size)) {
+        printf("out of range");
+        return 0;
+    } else if (already == foot) {
+        printf("This title has been used\n");
+        return 0;
+    } else {
+        return 1;
+    }
+}
+
+int put_foot(int size, int already) {
+    int position;
+
+    do {
+        printf(" range[1-%d]: ", size);
+        scanf("%d", &position);
+    } while(check_position(position, size, already) == 0);
+    return position;
+}
+
+int judge_infection(int left, int right, int germ) {
+    if ((germ - left) * (germ -right) == 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+int myrand(int key) {
+    return key * key;
+}
+
+int main(void) {
+    int germ;
+    int left, right;
+
+    germ = put_germ(NUM_TILES);
+    printf("Left foot");
+    left = put_foot(NUM_TILES, UNPLACED);
+    printf("Right foot");
+    right = put_foot(NUM_TILES, left);
+    if (judge_infection(left, right, germ) == 1) {
+        printf("BINGO!!!\n");
+    } else {
+        printf("Safe\n");
+    }
+
+    printf("Germ is in %d \n", germ);
+    return 0;
+}
