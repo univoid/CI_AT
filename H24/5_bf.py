@@ -25,8 +25,21 @@ def lsa(dl):
     return a, b, e
 
 
-def get_a(dl, x0, y0):
-    return float(sum((y-y0)*(x-x0) for (x, y) in dl))/((sum((x-x0)**2 for (x, y) in dl)))
+def binse(l, r, dl, x0, y0):
+    if abs(l-r) < 0.1:
+        return l
+
+    mid = (l + r) / 2
+    a = (l + mid)/2
+    b = y0 - a * x0
+    e1 = cale(a, b, dl)
+    a = (r+mid)/2
+    b = y0 - a * x0
+    e2 = cale(a, b, dl)
+    if e1 < e2:
+        return binse(l, mid, dl, x0, y0)
+    else:
+        return binse(mid, r, dl, x0, y0)
 
 
 f = open("data2.txt", "r")
@@ -46,11 +59,10 @@ for k in range(2, len(dList)-1):
     a1, b1, e1 = lsa(dList[:k])
     for xm in range(dList[k-1][0], dList[k][0]):
         ym = int(a1 * xm + b1)
-        # some math trick
-        a2 = get_a(dList[k:], xm, ym)
+        a2 = binse(0.0, 30.0, dList[k:], xm, ym)
         b2 = ym - a2 * xm
         e2 = cale(a2, b2, dList[k:])
-        # print k, a2, e2
+        print k,a2, e2
         if e > e1 + e2:
             ea1 = a1
             eb1 = b1
@@ -62,7 +74,7 @@ for k in range(2, len(dList)-1):
 
 
 plt.scatter(*zip(*dList))
-print "turn point ({}, {})".format(ex, ey)
+print "({}, {})".format(ex, ey)
 graph("{a} * x + {b}".format(a=ea1, b=eb1), range(0, 30))
 graph("{a} * x + {b}".format(a=ea2, b=eb2), range(0, 30))
 plt.show()

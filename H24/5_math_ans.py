@@ -1,7 +1,6 @@
-import numpy as np
-import matplotlib.pyplot as plt
 import sys
-
+from math import ceil
+from draw import initial_canvas, draw_point, draw_canvas
 
 def graph(formula, x_range):
     x = np.array(x_range)
@@ -60,9 +59,22 @@ for k in range(2, len(dList)-1):
             ey = ym
             e = e1 + e2
 
+# draw scatter
+canvas = [[" " for x in range(64)] for y in range(32)]
+initial_canvas(canvas)
+for (x,y) in dList:
+    draw_point(x, y, canvas, mark='*')
 
-plt.scatter(*zip(*dList))
-print "turn point ({}, {})".format(ex, ey)
-graph("{a} * x + {b}".format(a=ea1, b=eb1), range(0, 30))
-graph("{a} * x + {b}".format(a=ea2, b=eb2), range(0, 30))
-plt.show()
+print "turn point: ({}, {})".format(ex, ey)
+# draw fit
+for x in range(0, ex, int(ceil(1/ea1))):
+    if ea1 * x + eb1 < 0:
+        continue
+    draw_point(x, ea1*x+eb1, canvas, mark='o')
+
+for x in range(ex, 30, int(ceil(1/ea2))):
+    if ea2 * x + eb2 > 30:
+        break
+    draw_point(x, ea2*x+eb2, canvas, mark='o')
+
+draw_canvas(canvas)
