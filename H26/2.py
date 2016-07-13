@@ -1,4 +1,4 @@
-from math import sqrt,ceil,floor
+from math import sqrt, ceil, floor
 def computesA0(d):
     return (int(10/d)+1) ** 2
 
