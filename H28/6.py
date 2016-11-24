@@ -4,7 +4,7 @@ d = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1]
 r = ["M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"]
 str = ''
 num = int(raw_input())
-for i in range(0,len(d)):
+for i in range(0, len(d)):
     j = num / d[i]
     str += r[i] * j
     num = num % d[i]

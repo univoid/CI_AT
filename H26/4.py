@@ -1,6 +1,5 @@
 from math import sqrt
 
-
 def area_k(n):
     if n == 0:
         return 25 * sqrt(3)
